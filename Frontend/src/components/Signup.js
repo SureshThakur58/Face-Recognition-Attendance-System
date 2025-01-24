@@ -27,11 +27,11 @@ export default function Signup() {
   const avatarStyle = { backgroundColor: "#4CAF50" };
   const textFieldStyle = { margin: "10px 0" };
   const initialValues = {
-    fullname: "naresh",
-    email: "naresh.211421",
-    password: "naresh$143",
-    confirmPassword: "naresh$143",
-    accessCode: "TEACHER2025",
+    fullname: " ",
+    email: " ",
+    password: " ",
+    confirmPassword: " ",
+    accessCode: " ",
   };
 
   const validationSchema = Yup.object().shape({
