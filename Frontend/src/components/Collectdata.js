@@ -42,8 +42,8 @@ export default function Collectdata({ mystyle }) {
       .positive("Roll number must be a positive number")
       .test(
         "is-in-range",
-        "Roll number must be a 6-digit number within the range 211400–211448.",
-        (value) => value >= 211401 && value <= 211448
+        "Roll number must be a 6-digit number within the range 211400–211450.",
+        (value) => value >= 211401 && value <= 211450
       )
       .required("Roll number is required"),
     department: Yup.string().required("Department is required")
@@ -108,19 +108,6 @@ export default function Collectdata({ mystyle }) {
                 name="rollno"
                 component="div"
                 style={{ color: "red", fontSize: "0.8em" }}
-              />
-              <Field
-                as={TextField}
-                name="department"
-                label="Department"
-                placeholder="Enter your Department"
-                fullWidth
-                sx={textFieldSx}
-              />
-              <ErrorMessage
-                name="department"
-                component="div"
-                style={{ color: "red" }}
               />
               <Button
                 type="submit"

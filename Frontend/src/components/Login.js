@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { Link as RouterLink } from "react-router-dom";
 import {
@@ -14,8 +15,10 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import * as Yup from "yup";
+import axios from "axios";
 
 export default function Login() {
+  const navigate = useNavigate();
   const paperStyle = {
     padding: 20,
     height: "auto",
@@ -43,7 +46,6 @@ export default function Login() {
   };
 
   const validationSchema = Yup.object().shape({
-    fullname: Yup.string().required("Full Name is required"),
     email: Yup.string()
       .email("Invalid email format")
       .required("Email is required"),
@@ -53,8 +55,21 @@ export default function Login() {
   });
 
   const onSubmit = (values, { resetForm }) => {
-    console.log("Form Data: ", values);
-    resetForm();
+    axios
+      .post("http://localhost:5000/api/login", values) // Replace with your backend URL
+      .then((response) => {
+        console.log("Login Success:", response.data);
+        // Store the JWT token in localStorage/sessionStorage if needed
+        localStorage.setItem("token", response.data.token);
+        resetForm(); // Reset form after successful login
+        navigate("/home"); // Navigate to the home page
+      })
+      .catch((error) => {
+        console.error("Login Error:", error.response?.data || error.message);
+        alert(
+          error.response?.data?.message || "An error occurred. Please try again."
+        );
+      });
   };
 
   return (
@@ -72,21 +87,6 @@ export default function Login() {
           >
             {(props) => (
               <Form>
-                <Field
-                  as={TextField}
-                  style={textFieldStyle}
-                  id="loginname"
-                  name="fullname"
-                  label="User Full Name"
-                  placeholder="Enter Full Name"
-                  fullWidth
-                />
-                <ErrorMessage
-                  name="fullname"
-                  component="div"
-                  style={{ color: "red", fontSize: "0.8em" }}
-                />
-
                 <Field
                   as={TextField}
                   style={textFieldStyle}

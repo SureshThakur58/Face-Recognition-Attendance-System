@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -6,30 +7,31 @@ import {
   TextField,
   Button,
   Typography,
-
 } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios"; // Import Axios
 
 export default function Signup() {
+  const navigate = useNavigate();
   const paperStyle = {
     padding: "30px 20px",
     width: "300px",
     height: "auto",
     margin: "20px auto",
     borderRadius: 50,
-    backgroundColor: "transparent", 
+    backgroundColor: "transparent",
     boxShadow: "0 9px 9px rgb(251, 255, 0)",
   };
   const avatarStyle = { backgroundColor: "#4CAF50" };
   const textFieldStyle = { margin: "10px 0" };
   const initialValues = {
-    fullname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    accessCode: "",
+    fullname: "naresh",
+    email: "naresh.211421",
+    password: "naresh$143",
+    confirmPassword: "naresh$143",
+    accessCode: "TEACHER2025",
   };
 
   const validationSchema = Yup.object().shape({
@@ -37,7 +39,7 @@ export default function Signup() {
     email: Yup.string()
       .email("Invalid email format")
       .required("Email is required"),
-    
+
     accessCode: Yup.string()
       .required("Access Code is required")
       .oneOf(["TEACHER2025"], "Invalid access code"),
@@ -49,10 +51,25 @@ export default function Signup() {
       .required("Confirm Password is required"),
   });
 
-  const onSubmit = (values, { resetForm }) => {
-    console.log("Form Data: ", values);
-    alert("Signup Successful!");
-    resetForm();
+  const onSubmit = async (values, { resetForm }) => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/signup", {
+        fullname: values.fullname,
+        email: values.email,
+        password: values.password,
+      });
+      console.log("Response:", response.data);
+      resetForm();
+      navigate("/login"); // Navigate to the home page
+    } catch (error) {
+      console.error(
+        "Error during signup:",
+        error.response?.data?.message || error.message
+      );
+      alert(
+        "Signup Failed: " + (error.response?.data?.message || error.message)
+      );
+    }
   };
 
   return (
@@ -133,7 +150,7 @@ export default function Signup() {
                 type="password"
                 fullWidth
               />
-             
+
               <ErrorMessage
                 name="confirmPassword"
                 component="div"

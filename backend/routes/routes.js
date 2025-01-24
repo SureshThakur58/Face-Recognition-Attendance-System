@@ -5,9 +5,13 @@ const dataController = require('../controllers/dataController');
 const trainController = require('../controllers/trainController');
 const recognitionController = require('../controllers/recognitionController');
 const studentController = require('../controllers/studentController');
+const signupController = require('../controllers/signupController');
 
 // Login route
 router.post('/login', authController.login);
+
+// Signup route
+router.post('/signup', signupController.signup);
 
 // Data collection route
 router.post('/collect-data', dataController.collectData);
